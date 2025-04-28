@@ -1,0 +1,27 @@
+GOTAGAS/
+├── assets/
+│   ├── css/
+│   │   ├── bootstrap.min.css
+│   │   └── styles.css
+│   ├── js/
+│   │   ├── bootstrap.bundle.min.js
+│   │   ├── jquery.min.js
+│   │   └── scripts.js
+│   └── img/
+│       └── logo.png
+├── config/
+│   └── db.php
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   └── modals.php
+├── controllers/
+│   ├── auth_controller.php
+│   └── session_controller.php
+├── index.php
+├── dashboard.php
+└── logout.php
+
+
+
+apis-token-14619.f1zYpdbph2WW8q74cD2GQT8mpU2MMt40

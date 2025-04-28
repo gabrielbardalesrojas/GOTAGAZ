@@ -1,0 +1,79 @@
+-- Ejecutar este script en phpMyAdmin de Laragon
+CREATE DATABASE IF NOT EXISTS gotagasgo;
+USE gotagasgo;
+
+-- Tabla para usuarios (clientes)
+CREATE TABLE IF NOT EXISTS clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    telefono VARCHAR(15),
+    direccion TEXT,
+    referencia TEXT,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla para empresas (actualizada con nuevos campos)
+CREATE TABLE IF NOT EXISTS empresas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ruc VARCHAR(11) NOT NULL UNIQUE,
+    razon_social VARCHAR(150),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    telefono VARCHAR(15),
+    whatsapp VARCHAR(15),
+    direccion TEXT,
+    latitud DECIMAL(10, 8),
+    longitud DECIMAL(11, 8),
+    logo VARCHAR(255),
+    descripcion TEXT,
+    horario_atencion VARCHAR(100),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla para productos
+CREATE TABLE IF NOT EXISTS productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10, 2) NOT NULL,
+    imagen VARCHAR(255),
+    stock INT DEFAULT 0,
+    disponible BOOLEAN DEFAULT TRUE,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+);
+
+-- Tabla para pedidos
+CREATE TABLE IF NOT EXISTS pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    empresa_id INT NOT NULL,
+    estado ENUM('pendiente', 'en_proceso', 'en_camino', 'entregado', 'cancelado') DEFAULT 'pendiente',
+    total DECIMAL(10, 2) NOT NULL,
+    direccion_entrega TEXT NOT NULL,
+    referencia_entrega TEXT,
+    fecha_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_entrega DATETIME,
+    metodo_pago ENUM('efectivo', 'transferencia', 'tarjeta') DEFAULT 'efectivo',
+    notas TEXT,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+);
+
+-- Tabla para detalles de pedidos
+CREATE TABLE IF NOT EXISTS detalles_pedido (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
+);
+
+
+);gotagasgo
